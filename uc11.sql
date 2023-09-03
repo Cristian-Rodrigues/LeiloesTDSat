@@ -1,0 +1,1 @@
+SELECT * FROM leiloes_tdsat.produtos;
