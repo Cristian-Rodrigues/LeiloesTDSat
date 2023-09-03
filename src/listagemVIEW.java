@@ -1,12 +1,15 @@
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.sql.DriverManager;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Adm
@@ -137,9 +140,9 @@ public class listagemVIEW extends javax.swing.JFrame {
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         String id = id_produto_venda.getText();
-        
+
         ProdutosDAO produtosdao = new ProdutosDAO();
-        
+
         //produtosdao.venderProduto(Integer.parseInt(id));
         listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
@@ -201,25 +204,38 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarProdutos(){
+    private void listarProdutos() {
+        conectaDAO conecta = new conectaDAO();
+        conecta.conectar();
+        
+        DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+        model.setNumRows(0);
+
+        listaProdutos.getColumnModel().getColumn(0);
+        listaProdutos.getColumnModel().getColumn(1);
+        listaProdutos.getColumnModel().getColumn(2);
+        listaProdutos.getColumnModel().getColumn(3);
+
         try {
-            ProdutosDAO produtosdao = new ProdutosDAO();
-            
-            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
-            model.setNumRows(0);
-            
-            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
-            
-            for(int i = 0; i < listagem.size(); i++){
+            PreparedStatement pstm;
+            ResultSet rs;
+            Connection conn;
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/leiloes_tdsat?useSSL=false", "root", "garoto10");
+
+            pstm = conn.prepareStatement("select * from produtos;");
+            rs = pstm.executeQuery();
+
+            while (rs.next()) {
                 model.addRow(new Object[]{
-                    listagem.get(i).getId(),
-                    listagem.get(i).getNome(),
-                    listagem.get(i).getValor(),
-                    listagem.get(i).getStatus()
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4)
                 });
             }
+        conecta.desconectar();
         } catch (Exception e) {
         }
-    
+
     }
 }

@@ -22,7 +22,7 @@ public class conectaDAO {
     public Connection conectar() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/leiloes_tdsat", "root", "garoto10");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/leiloes_tdsat?useSSL=false", "root", "garoto10");
             System.out.println("Conexão realizada com sucesso");
             return con;
         } catch (ClassNotFoundException | SQLException ex) {
