@@ -40,6 +40,23 @@ public class ProdutosDAO {
         
     }
     
+    public void venderProduto (int idVendido){
+        
+        conectaDAO conecta = new conectaDAO();
+        
+        try {
+            
+           prep = conecta.conectar().prepareStatement("UPDATE produtos SET status = 'Vendido' WHERE id = "+idVendido + ";");
+           prep.executeUpdate();
+           conecta.desconectar();
+           JOptionPane.showMessageDialog(null, "Produto Vendido com sucesso.");
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao vender produto."+ e.getMessage());
+        }
+    
+    }
+    
     public ArrayList<ProdutosDTO> listarProdutos(){
         
         return listagem;
